@@ -1,6 +1,6 @@
 MusicIR
 =======
 
-music genre retrieval 
+music genre retrieval based on information 
 
-Based on MIDI files and  machine learning.
+useing MIDI files and  machine learning.

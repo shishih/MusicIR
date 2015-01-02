@@ -3,7 +3,7 @@ import math
 def calc_cos(v1,v2):
     if len(v1) != len(v2):
         print('the length of the two vector dosn\'t match')
-        raise SystemExit
+        raise SyntaxError
     length = len(v1)
     sxy = 0.0
     sx2 = 0.0
@@ -27,6 +27,3 @@ def calc_dis(v1,v2):
     for i in range(1,length):
         result2 += (float(v1[i]) - float(v2[i])) ** 2
     return result2
-
-def compare(kw_only1, kw_only2):
-    return kw_only1[1] - kw_only2[1]

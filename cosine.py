@@ -5,11 +5,14 @@ import functools
 from calc_cos import calc_cos
 from calc_cos import calc_dis
 
+def compare(kw_only1, kw_only2):
+    return kw_only1[1] - kw_only2[1]
+
 LIST_CLASS = ('未知','轻快','抒情','劲爆','节奏感强')
 
 if len(sys.argv) <= 2:
     print('usage: {0} training_file testing_file'.format(sys.argv[0]))
-    sys.exit();
+    sys.exit()
 
 train_filename = sys.argv[1]
 assert os.path.exists(train_filename),'trianing file not found'

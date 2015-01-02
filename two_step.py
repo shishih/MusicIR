@@ -4,5 +4,13 @@ import math
 import functools
 import calc_cos as c
 
-print(c.calc_cos([1,2,3,4],[2,3,4,5]));
-os.system("pause");
+FILE = './a2.txt'
+
+f = open(FILE)
+df = f.readlines()
+l = []
+for s in df:
+    ltemp = {}
+
+os.system("pause")
+f.close

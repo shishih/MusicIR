@@ -11,6 +11,11 @@ df = f.readlines()
 l = []
 for s in df:
     ltemp = {}
-
+    stemp = s.split()
+    length = len(stemp)
+    ltemp[0] = stemp[0]
+    for i in range(1,length):
+        ltemp[i] = stemp[i].split(':')[1]
+        l.append(ltemp)
 os.system("pause")
 f.close

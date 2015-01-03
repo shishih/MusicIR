@@ -7,14 +7,14 @@ import time
 
 count = 0
 
-def get_mean(v1,v2):
-    if len(v1) != len(v2):
+def get_mean(step1,step2):
+    if len(step1.me[1]) != len(step2.me[1]):
         print('the length of the two vector dosn\'t match')
         raise SyntaxError
-    length = len(v1)
+    length = len(step1.me[1])
     mean = {}
     for i in range(1,length):
-        mean[i] = (float(v1[i]) + float(v2[i])) / 2
+        mean[i] = (step1.amount * float(step1.me[1][i]) + step2.amount * float(step2.me[1][i])) / (step1.amount + step2.amount)
     mean[0] = None
     return mean
 
@@ -42,13 +42,15 @@ class step:
             self.left = None
             self.right = None
             self.me = [0,args[0]]
+            self.amount = 1
         elif len(args) == 2:
             self.left = args[0]
             self.right = args[1]
             if self.left == None or self.right == None:
                 self.me = None
             else:
-                self.me = [0,get_mean(left.me[1],right.me[1])]
+                self.me = [0,get_mean(left,right)]
+            self.amount = self.left.amount + self.right.amount
         else:
             raise TypeError
         self.me[0] = count

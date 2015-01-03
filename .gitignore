@@ -189,5 +189,3 @@ _Pvt_Extensions/
 ModelManifest.xml
 *.sln
 *.pyproj
-/out.txt
-/out.png

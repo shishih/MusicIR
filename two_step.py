@@ -22,7 +22,14 @@ def outputTree(root, file):
     if root.me[1][0] != None:
         s = ' %d [label="%s\\n" shape=box];\nn' % (root.me[0], root.me[1][0])
     else:
-        s = ' %d [label="%.4f\\n" fontcolor=gray];\nn' % (root.me[0], root.cos)
+        color = 'gray'
+        if root.cos >= 0.9:
+            color = 'red'
+        elif root.cos >= 0.8:
+            color = 'green'
+        elif root.cos >= 0.7:
+            color = 'yellow'
+        s = ' %d [label="%.4f\\n" fontcolor=%s];\nn' % (root.me[0], root.cos, color)
     print(s, end='', file=file)
     if root.left != None:
         s = ' %d -> %d' % (root.me[0],root.left.me[0])
@@ -58,8 +65,8 @@ class step:
         self.me[0] = count
         count += 1
 
-FILE = './a2.txt'
-OUTPUT = './out.txt'
+FILE = './a3V1.txt'
+OUTPUT = './a3V1_out.txt'
 
 time1 = time.time()
 f = open(FILE)

@@ -22,7 +22,7 @@ def outputTree(root, file):
     if root.me[1][0] != None:
         s = ' %d [label="%s\\n" shape=box];\nn' % (root.me[0], root.me[1][0])
     else:
-        s = ' %d [fontcolor=gray];\nn' % root.me[0]
+        s = ' %d [label="%.4f\\n" fontcolor=gray];\nn' % (root.me[0], root.cos)
     print(s, end='', file=file)
     if root.left != None:
         s = ' %d -> %d' % (root.me[0],root.left.me[0])
@@ -38,12 +38,13 @@ def outputTree(root, file):
 class step:
     def __init__(self,args):
         global count
-        if len(args) == 1:
+        if len(args) == 2:
             self.left = None
             self.right = None
             self.me = [0,args[0]]
             self.amount = 1
-        elif len(args) == 2:
+            self.cos = args[1]
+        elif len(args) == 3:
             self.left = args[0]
             self.right = args[1]
             if self.left == None or self.right == None:
@@ -51,6 +52,7 @@ class step:
             else:
                 self.me = [0,get_mean(left,right)]
             self.amount = self.left.amount + self.right.amount
+            self.cos = args[2]
         else:
             raise TypeError
         self.me[0] = count
@@ -71,7 +73,7 @@ for s in range(ldf):
     ltemp[0] = str(s + 1)
     for i in range(1,length):
         ltemp[i] = stemp[i].split(':')[1]
-    l.append(step((ltemp,)))
+    l.append(step((ltemp,-1)))
 
 time2 = time.time()
 print('reading using time: %f' % (time2 - time1))
@@ -94,7 +96,7 @@ while len(l) > 1:
                 min_pair = [i,j]
     right = l.pop(min_pair[1])
     left = l.pop(min_pair[0])
-    l.append(step((left,right)))
+    l.append(step((left,right,max_cos)))
 
 time3 = time.time()
 print('clustering using time: %f' % (time3 - time2))

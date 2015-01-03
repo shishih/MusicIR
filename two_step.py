@@ -3,6 +3,7 @@ import os
 import math
 import functools
 import calc_cos as c
+import time
 
 count = 0
 
@@ -14,7 +15,25 @@ def get_mean(v1,v2):
     mean = {}
     for i in range(1,length):
         mean[i] = (float(v1[i]) + float(v2[i])) / 2
+    mean[0] = None
     return mean
+
+def outputTree(root, file):
+    if root.me[1][0] != None:
+        s = ' %d [label="%s\\n" shape=box];\nn' % (root.me[0], root.me[1][0])
+    else:
+        s = ' %d [fontcolor=gray];\nn' % root.me[0]
+    print(s, end='', file=file)
+    if root.left != None:
+        s = ' %d -> %d' % (root.me[0],root.left.me[0])
+        s += ';\nn'
+        print(s, end='', file=file)
+        outputTree(root.left, file)
+    if root.right != None:
+        s = ' %d -> %d' % (root.me[0],root.right.me[0])
+        s += ';\nn'
+        print(s, end='', file=file)
+        outputTree(root.right, file)
 
 class step:
     def __init__(self,args):
@@ -22,33 +41,38 @@ class step:
         if len(args) == 1:
             self.left = None
             self.right = None
-            self.me = args[0]
+            self.me = [0,args[0]]
         elif len(args) == 2:
             self.left = args[0]
             self.right = args[1]
             if self.left == None or self.right == None:
                 self.me = None
             else:
-                self.me = get_mean(left.me,right.me)
+                self.me = [0,get_mean(left.me[1],right.me[1])]
         else:
             raise TypeError
         self.me[0] = count
         count += 1
 
 FILE = './a2.txt'
+OUTPUT = './out.txt'
 
+time1 = time.time()
 f = open(FILE)
 df = f.readlines()
 l = []
-for s in df:
+ldf = len(df)
+for s in range(ldf):
     ltemp = {}
-    stemp = s.split()
+    stemp = df[s].split()
     length = len(stemp)
-    ltemp[0] = stemp[0]
+    ltemp[0] = str(s + 1)
     for i in range(1,length):
         ltemp[i] = stemp[i].split(':')[1]
     l.append(step((ltemp,)))
 
+time2 = time.time()
+print('reading using time: %f' % (time2 - time1))
 t = {}
 while len(l) > 1:
     length = len(l)
@@ -61,7 +85,7 @@ while len(l) > 1:
             if l[j].me[0] in t[l[i].me[0]]:
                 cos = t[l[i].me[0]][l[j].me[0]]
             else:
-                cos = c.calc_cos(l[i].me,l[j].me)
+                cos = c.calc_cos(l[i].me[1],l[j].me[1])
                 t[l[i].me[0]][l[j].me[0]] = cos
             if cos > max_cos:
                 max_cos = cos
@@ -70,7 +94,16 @@ while len(l) > 1:
     left = l.pop(min_pair[0])
     l.append(step((left,right)))
 
-print(l[0])
+time3 = time.time()
+print('clustering using time: %f' % (time3 - time2))
 
-os.system("pause")
+time3 = time.time()
+out = open(OUTPUT, mode = 'w')
+print('digraph {n',end = '', file = out)
+outputTree(l[0] , out)
+print('}' , end='',file=out)
+time4 = time.time()
+print('output using time: %f' % (time4 - time3))
+out.close
+
 f.close
